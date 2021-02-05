@@ -57,8 +57,7 @@ export default function () {
     } catch (err) {
       if (err.status) {
         if (err.status === httpStatus.CONFLICT) {
-          logger.log('debug', JSON.stringify(err));
-          return {status: RECORD_IMPORT_STATE.DUPLICATE, metadata: {matches: err.payload, title, standardIdentifiers}};
+          return handleDuplicate(err, title, standardIdentifiers)
         }
 
         throw new Error(`Melinda REST API error: ${err.status} ${err.payload || ''}`);
@@ -67,4 +66,20 @@ export default function () {
       throw err;
     }
   };
+
+  function handleDuplicate(data, title, standardIdentifiers) {
+    logger.log('debug', JSON.stringify(data));
+    logger.log('debug', JSON.stringify(title));
+    logger.log('debug', JSON.stringify(standardIdentifiers));
+
+    // Get record mentioned in data
+
+    // Validate match mergeability
+    // Fail validation return duplicate info
+    return {status: RECORD_IMPORT_STATE.DUPLICATE, metadata: {matches: data.payload, title, standardIdentifiers}};
+
+    // Success validation start merging records
+    // Fails merging return RECORD_IMPORT_STATE.ERROR, metadata: {Error: Merge failed, both records?}?
+    // Succes merging send update -> return RECORD_IMPORT_STATE.UPDATED, metadata: {melindaId, title, standardIdentifiers}
+  }
 }
