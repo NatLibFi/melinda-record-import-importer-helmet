@@ -57,6 +57,7 @@ export default function () {
     } catch (err) {
       if (err.status) {
         if (err.status === httpStatus.CONFLICT) {
+          logger.log('debug', JSON.stringify(err));
           return {status: RECORD_IMPORT_STATE.DUPLICATE, metadata: {matches: err.payload, title, standardIdentifiers}};
         }
 
