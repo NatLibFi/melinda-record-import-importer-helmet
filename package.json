@@ -25,10 +25,6 @@
 		"lint": "eslint src",
 		"lint:dev": "eslint --fix src",
 		"test": "npm run lint",
-		"_test:base": "cross-env NODE_ENV=test nyc mocha --require @babel/register",
-		"_test": "npm run lint && npm run test:base -- src/*.spec.js && npm run coverage",
-		"_test:dev": "npm run lint:dev && npm run test:base -- src/*.spec.js && npm run coverage",
-		"coverage": "nyc check-coverage --per-file",
 		"build": "babel src --source-maps --copy-files --delete-dir-on-start --out-dir=dist"
 	},
 	"dependencies": {
@@ -47,15 +43,7 @@
 		"@babel/preset-env": "^7.13.12",
 		"@babel/register": "^7.13.8",
 		"@natlibfi/eslint-config-melinda-backend": "^1.0.6",
-		"@natlibfi/fixura": "^2.1.3",
-		"babel-plugin-istanbul": "^6.0.0",
-		"babel-plugin-rewire": "^1.2.0",
-		"chai": "^4.2.0",
-		"chai-as-promised": "^7.1.1",
-		"cross-env": "^7.0.2",
-		"eslint": "^7.12.0",
-		"mocha": "^8.2.0",
-		"nyc": "^15.1.0"
+		"eslint": "^7.12.0"
 	},
 	"eslintConfig": {
 		"extends": "@natlibfi/melinda-backend"
@@ -68,32 +56,6 @@
 					"targets": "maintained node versions"
 				}
 			]
-		],
-		"env": {
-			"test": {
-				"plugins": [
-					"istanbul",
-					"rewire"
-				]
-			}
-		}
-	},
-	"nyc": {
-		"exclude": [
-			"*/*.spec.js"
-		],
-		"reporter": [
-			"lcov",
-			"html"
-		],
-		"require": [
-			"@babel/register"
-		],
-		"sourceMap": false,
-		"instrument": false,
-		"lines": 80,
-		"statements": 80,
-		"functions": 80,
-		"branches": 80
+		]
 	}
 }
