@@ -62,11 +62,11 @@ export default function () {
       logger.log('info', `Updated record ${id}`);
       return {status: RECORD_IMPORT_STATE.UPDATED, metadata: {id, title, standardIdentifiers}};
 
-    } catch (err) {
-      if (err.status) {
-        if (err.status === httpStatus.CONFLICT) {
+    } catch (error) {
+      if (error.status) {
+        if (error.status === httpStatus.CONFLICT) {
           logger.log('error', 'Got expected conflict response');
-          return {status: RECORD_IMPORT_STATE.DUPLICATE, metadata: {matches: err.payload, title, standardIdentifiers}};
+          return {status: RECORD_IMPORT_STATE.DUPLICATE, metadata: {matches: error.payload, title, standardIdentifiers}};
         }
 
         if (error.status === httpStatus.UNPROCESSABLE_ENTITY) {
@@ -79,10 +79,10 @@ export default function () {
           return {status: RECORD_IMPORT_STATE.INVALID, metadata: {validationMessages: error.payload, title, standardIdentifiers}};
         }
 
-        throw new Error(`Melinda REST API error: ${err.status} ${err.payload || ''}`);
+        throw new Error(`Melinda REST API error: ${error.status} ${error.payload || ''}`);
       }
 
-      throw err;
+      throw error;
     }
   };
 }
