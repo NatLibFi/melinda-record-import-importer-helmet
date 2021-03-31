@@ -41,7 +41,7 @@ export default function () {
   return async message => {
     const record = new MarcRecord(JSON.parse(message.content.toString()), {subfieldValues: false});
     const [f001] = record.get('001');
-    const UPDATE = f001.value !== undefined;
+    const UPDATE = f001 !== undefined;
     const title = getRecordTitle(record);
     const standardIdentifiers = getRecordStandardIdentifiers(record);
 
