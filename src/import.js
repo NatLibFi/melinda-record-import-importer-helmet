@@ -79,6 +79,11 @@ export default function () {
           return {status: RECORD_IMPORT_STATE.INVALID, metadata: {validationMessages: error.payload, title, standardIdentifiers}};
         }
 
+        if (error.status === httpStatus.INTERNAL_SERVER_ERROR) {
+          logger.log('error', 'Got expected internal server error response');
+          return {status: RECORD_IMPORT_STATE.INVALID, metadata: {validationMessages: 'Invalid record data', title, standardIdentifiers}};
+        }
+
         throw new Error(`Melinda REST API error: ${error.status} ${error.payload || ''}`);
       }
 
