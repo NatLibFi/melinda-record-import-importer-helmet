@@ -52,7 +52,7 @@ export default function () {
 
     try {
       logger.log('info', 'Importing record to Melinda...');
-      if (UPDATE) {
+      if (!UPDATE) {
         const {recordId: id} = await apiClient.create(record, {unique: true});
         logger.log('info', `Created new record ${id}`);
         return {status: RECORD_IMPORT_STATE.CREATED, metadata: {id, title, standardIdentifiers}};
